@@ -18,7 +18,7 @@ void print_matrix(struct matrix *m) {
       double x = (m->m)[i][j];
       printf(" %lf ",x); 
     }
-    printf("|\n");
+    printf("|\n\n");
   }
 }
 
@@ -53,12 +53,10 @@ void scalar_mult(double x, struct matrix *m) {
     for(j = 0; j < m->cols;j++){
       double n = (m->m)[i][j];
       (m->m)[i][j] = x*n;
-      }
     }
   }
 }
 
-}
 
 
 /*-------------- void matrix_mult() --------------
@@ -68,6 +66,23 @@ Returns:
 a*b -> b
 */
 void matrix_mult(struct matrix *a, struct matrix *b) {
+  struct matrix *prod;
+  prod = new_matrix(b->rows,b->cols);
+  int i, j, k;
+  for (i = 0; i < b->rows; i++){
+    for (j = 0; j < b->cols; j++){
+      int sum = 0;
+      for (k = 0; k < a->rows; k++){
+	sum += a->m[i][k] * b->m[k][j];
+      }
+      prod->m[i][j] = sum;
+
+    }
+  }
+
+  copy_matrix(prod,b);
+  free_matrix(prod);
+
 }
 
 
